@@ -1,5 +1,7 @@
-module rom(input logic [15:0] address, output logic[15:0] );
+module rom(input logic [15:0] address, output logic[15:0] data);
 
+
+    always_comb begin
     case (address)
         16'h0000: data = 16'h6200;
         16'h0001: data = 16'h6401;
@@ -10,5 +12,7 @@ module rom(input logic [15:0] address, output logic[15:0] );
         16'h0006: data = 16'h8005;
         default: data = 16'h0000;
     endcase
+
+    end
 
 endmodule
