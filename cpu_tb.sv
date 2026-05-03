@@ -3,11 +3,13 @@ module cpu_tb;
     logic clk;
     logic reset;
     logic [15:0] result;
+    logic [15:0] fib_out;
 
     cpu uut(
         .clk(clk),
         .reset(reset),
-        .result(result)
+        .result(result),
+        .fib_out(fib_out)
     );
 
     always #1 clk = ~clk;
@@ -19,6 +21,11 @@ module cpu_tb;
         reset = 0;
         #500;
         $finish;
+    end
+
+    initial begin
+        $dumpfile("cpu_tb.vcd");
+        $dumpvars(0, cpu_tb);
     end
 
     initial begin

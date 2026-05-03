@@ -8,6 +8,9 @@ https://github.com/user-attachments/assets/442a1684-2e5e-44e8-a177-ca32bde8f09a
 ## Block Diagram of CPU Architecture and 5-Stage Pipelining Process
 ![BLOCK DIAGRAM](docs/cpu_pipeline.png)
 
+## Simulation
+![GTKWave Waveform](docs/gtkwave.png)
+
 ## Instruction Set Architecture
 
 ### Supported Operations
