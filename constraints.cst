@@ -15,3 +15,6 @@ IO_PORT "clk_out2" IO_TYPE=LVCMOS33;
 
 IO_LOC "dio2" 30;
 IO_PORT "dio2" IO_TYPE=LVCMOS33;
+
+IO_LOC "overflow_led" 31;
+IO_PORT "overflow_led" IO_TYPE=LVCMOS33;
