@@ -2,7 +2,8 @@
 
 Overview: A custom 16-bit RISC processor written in SystemVerilog, complete with a 5-stage pipeline, along with data forwarding and stalling for hazard resolution. Includes a custom 12-instruction ISA, a Python assembler, and FPGA deployment on a Gowin Tang Nano 9K with live Fibonacci output on dual TM1637 7-segment displays.
 
-[![FPGA Demo](https://img.youtube.com/vi/fuyBQDSU3Kw/0.jpg)](https://youtu.be/fuyBQDSU3Kw)
+## Demo
+https://github.com/user-attachments/assets/442a1684-2e5e-44e8-a177-ca32bde8f09a
 
 ## Block Diagram of CPU Architecture and 5-Stage Pipelining Process
 ![BLOCK DIAGRAM](docs/cpu_pipeline.png)
