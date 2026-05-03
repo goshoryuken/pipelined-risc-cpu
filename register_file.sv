@@ -5,7 +5,8 @@ module register_file (input logic clk,
   input logic [2:0] read_addr1, 
   input logic[2:0] read_addr2, 
   output logic[15:0] read_data1,
-  output logic[15:0] read_data2);
+  output logic[15:0] read_data2,
+  output logic [15:0] fib_out);
 
 
     logic [15:0] registers[7:0];
@@ -35,7 +36,7 @@ module register_file (input logic clk,
     //and if it is, you just grab the data sitting on the write_data wire and pass it thru
     assign read_data1 = (write_enable && (read_addr1 == write_addr)) ? write_data : registers[read_addr1];
     assign read_data2 = (write_enable && (read_addr2 == write_addr)) ? write_data : registers[read_addr2];
-
+    assign fib_out = registers[5];
 
 
 

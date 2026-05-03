@@ -1,4 +1,4 @@
-module cpu(input logic clk, input logic reset, output logic [15:0] result);
+module cpu(input logic clk, input logic reset, output logic [15:0] result, output logic [15:0] fib_out);
     
     //fetch logic stuff
     logic[15:0] instruction;
@@ -9,6 +9,7 @@ module cpu(input logic clk, input logic reset, output logic [15:0] result);
     //decode logic stuff
     logic[2:0] read_addr1;
     logic[2:0] read_addr2;
+    
     
     assign read_addr1 = if_id_instruction[8:6];
     assign read_addr2 = if_id_instruction[5:3];
@@ -284,12 +285,13 @@ module cpu(input logic clk, input logic reset, output logic [15:0] result);
 
     //instantiating the data memory
     data_memory data_memory_inst (
+        .clk(clk),
+        .reset(reset), // Wire the reset signal here
         .write_enable(ex_mem_mem_write_enable),
         .write_addr(ex_mem_alu_result[15:0]),
         .write_data(ex_mem_read_data2),
         .read_addr(ex_mem_alu_result[15:0]),
-        .read_data(mem_read_data),
-        .clk(clk)
+        .read_data(mem_read_data)
     );
 
     //instantiating the instruction memory
@@ -307,7 +309,8 @@ module cpu(input logic clk, input logic reset, output logic [15:0] result);
         .read_addr1(read_addr1),
         .read_addr2(read_addr2),
         .read_data1(read_data1),
-        .read_data2(read_data2)
+        .read_data2(read_data2),
+        .fib_out(fib_out)
     );
 
 
