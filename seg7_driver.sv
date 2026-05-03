@@ -6,9 +6,9 @@ module seg7_driver (
     inout  wire         dio       // To TM1637 DIO (Pin 28)
 );
 
-    // --------------------------------------------------------
-    // 1. Tick Generator (27MHz -> ~100kHz state transition)
-    // --------------------------------------------------------
+   
+    // 1. tick Generator (27MHz -> ~100kHz state transition)
+    
     // Each I2C bit will take 3 ticks (30us), yielding a safe ~33kHz I2C clock
     logic [15:0] tick_counter;
     logic        tick;
@@ -26,9 +26,9 @@ module seg7_driver (
         end
     end
 
-    // --------------------------------------------------------
+    
     // 2. BCD to 7-Segment Decoder
-    // --------------------------------------------------------
+    
     function logic [7:0] bcd_to_seg(input logic [3:0] bcd);
         case (bcd)
             4'h0: bcd_to_seg = 8'h3F;
@@ -51,9 +51,9 @@ module seg7_driver (
     assign seg_data[2] = bcd_to_seg(bcd_in[11:8]);
     assign seg_data[3] = bcd_to_seg(bcd_in[15:12]); // MSB (Left-most digit)
 
-    // --------------------------------------------------------
+    
     // 3. Macro Instruction Sequencer (The ROM)
-    // --------------------------------------------------------
+   
     logic [3:0] prog_pc;
     logic [2:0] macro_op;
     logic [7:0] macro_data;
@@ -90,9 +90,9 @@ module seg7_driver (
         endcase
     end
 
-    // --------------------------------------------------------
+
     // 4. Low-Level Pin Control FSM
-    // --------------------------------------------------------
+    
     // Tri-state buffer logic for DIO
     logic dio_out;
     logic dio_dir; // 1 = Output, 0 = Input (High-Z)
