@@ -1,6 +1,6 @@
 # 16 Bit 5-Stage Pipelined RISC CPU
 
-Overview: A custom 16-bit RISC processor written in SystemVerilog, complete with a 5-stage pipeline, along with data forwarding and stalling for hazard resolution. Includes a custom ISA and a Python assembler. Runs a simulated Fibonacci Sequence written in assembly that overflows at 46368.
+Overview: A custom 16-bit RISC processor written in SystemVerilog, complete with a 5-stage pipeline, along with data forwarding and stalling for hazard resolution. Includes a custom 12-instruction ISA, a Python assembler, and FPGA deployment on a Gowin Tang Nano 9K with live Fibonacci output on dual TM1637 7-segment displays.
 
 ## Block Diagram of CPU Architecture and 5-Stage Pipelining Process
 ![BLOCK DIAGRAM](docs/cpu_pipeline.png)
@@ -23,6 +23,26 @@ Overview: A custom 16-bit RISC processor written in SystemVerilog, complete with
 ## Custom Assembler
 Wrote a Python script `assembler.py` which takes readable assembly and bit-packs it into hex for the instruction memory.
 
+## FPGA Deployment
+
+### Hardware
+* FPGA: Gowin Tang Nano 9K (GW1NR-9, QFN88P)
+* Display: Two TM1637 4-digit 7-segment display modules (8 digits total)
+* Wiring: TM1637 CLK/DIO driven via GPIO  pins 27-30, VCC on 3.3V, GND shared
+
+### Architecture on FPGA
+
+The CPU runs on a divided clock (~1.6Hz) so the Fibonacci values are visible as they update on the screen. I put a module ("binary_to_bcd") that converts the 16-bit binary output from the cpu into 5 BCD digits using the double dabble algorithm. A driver for the seven segment displays sends the segment data to each display over the TM1637's 2-wire serial protocol, handling start/stop conditions, byte transmission, ACK cycles, and brightness.
+
+The Fibonacci sequence runs live on the FPGA, computing each value through the full 5-stage pipeline, and overflows at 46,368.
+
+### Bugs Fixed during Deployment
+
+* Replaced simulation only 'initial' block with synchronous reset; FPGAs just ignore 'initial' blocks for distributed RAM, so the memory was filled with garbage instead of Fibonacci values.
+* Tang Nano button is active-low, CPU is active-high. Inverted the reset in the top module.
+* Data memory used full 16-bit address lines for a 256-entry array, causing the synthesizer to build a 65,536-way mux and silently crashed. Had to slice to 8 bits.
+* among many others, these were just most prominent.
+
 ## HOW TO RUN
 
 ### Dependencies
@@ -38,3 +58,14 @@ iverilog -g2012 -o cpu_sim cpu_tb.sv cpu.sv alu.sv control_unit.sv register_file
 
 vvp cpu_sim
 ```
+### FPGA
+ 
+#### Dependencies
+* Gowin EDA (IDE + Programmer)
+* Tang Nano 9K
+#### To Deploy
+1. Create a Gowin project targeting GW1NR-LV9QN88PC6/I5 (Device Version C)
+2. Add all `.sv` source files and `constraints.cst`
+3. Set top module to `top`
+4. Run synthesis → place & route → generate bitstream
+5. Flash via Tools → Programmer
