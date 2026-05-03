@@ -2,6 +2,8 @@
 
 Overview: A custom 16-bit RISC processor written in SystemVerilog, complete with a 5-stage pipeline, along with data forwarding and stalling for hazard resolution. Includes a custom 12-instruction ISA, a Python assembler, and FPGA deployment on a Gowin Tang Nano 9K with live Fibonacci output on dual TM1637 7-segment displays.
 
+[![FPGA Demo](https://img.youtube.com/vi/fuyBQDSU3Kw/0.jpg)](https://youtu.be/fuyBQDSU3Kw)
+
 ## Block Diagram of CPU Architecture and 5-Stage Pipelining Process
 ![BLOCK DIAGRAM](docs/cpu_pipeline.png)
 
@@ -29,12 +31,14 @@ Wrote a Python script `assembler.py` which takes readable assembly and bit-packs
 * FPGA: Gowin Tang Nano 9K (GW1NR-9, QFN88P)
 * Display: Two TM1637 4-digit 7-segment display modules (8 digits total)
 * Wiring: TM1637 CLK/DIO driven via GPIO  pins 27-30, VCC on 3.3V, GND shared
+* Other components: Red LED (pin 31), 100Ω Resistor, a buncha jumper cables
 
 ### Architecture on FPGA
 
 The CPU runs on a divided clock (~1.6Hz) so the Fibonacci values are visible as they update on the screen. I put a module ("binary_to_bcd") that converts the 16-bit binary output from the cpu into 5 BCD digits using the double dabble algorithm. A driver for the seven segment displays sends the segment data to each display over the TM1637's 2-wire serial protocol, handling start/stop conditions, byte transmission, ACK cycles, and brightness.
 
-The Fibonacci sequence runs live on the FPGA, computing each value through the full 5-stage pipeline, and overflows at 46,368.
+The Fibonacci sequence runs live on the FPGA, computing each value through the full 5-stage pipeline, and overflows at 46,368. There is a red LED that goes live when that overflow happens.
+The sequence goes like this: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368... and then it overflows because the registers are 16 bits, so they can hold max 0-65535, the next number after 46368 is 75025, which is greater so it stores 75025 - 65536 = 949 instead, which is a wrong, smaller number.
 
 ### Bugs Fixed during Deployment
 
