@@ -49,7 +49,7 @@ The sequence goes like this: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
 * Replaced simulation only 'initial' block with synchronous reset; FPGAs just ignore 'initial' blocks for distributed RAM, so the memory was filled with garbage instead of Fibonacci values.
 * Tang Nano button is active-low, CPU is active-high. Inverted the reset in the top module.
 * Data memory used full 16-bit address lines for a 256-entry array, causing the synthesizer to build a 65,536-way mux and silently crashed. Had to slice to 8 bits.
-* among many others, these were just most prominent.
+* among many others, these were just the most prominent.
 
 ## HOW TO RUN
 
