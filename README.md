@@ -42,7 +42,7 @@ Wrote a Python script `assembler.py` which takes readable assembly and bit-packs
 The CPU runs on a divided clock (~1.6Hz), so the Fibonacci values are visible as they update on the screen. I put a module ("binary_to_bcd") that converts the 16-bit binary output from the cpu into 5 BCD digits using the double dabble algorithm. A driver for the seven-segment displays sends the segment data to each display over the TM1637's 2-wire serial protocol, handling start/stop conditions, byte transmission, ACK cycles, and brightness.
 
 The Fibonacci sequence runs live on the FPGA, computing each value through the full 5-stage pipeline, and overflows at 46,368. There is a red LED that goes live when that overflow happens.
-The sequence goes like this: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368... and then it overflows because the registers are 16 bits, so they can hold max 0-65535, the next number after 46368 is 75025, which is greater so it stores 75025 - 65536 = 949 instead, which is a wrong, smaller number.
+The sequence goes like this: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368... and then it overflows because the registers are 16 bits, so they can hold max 0-65535, the next number after 46368 is 75025, which is greater so it stores 75025 - 65536 = 9489 instead, which is a wrong, smaller number.
 
 ### Bugs Fixed during Deployment
 
