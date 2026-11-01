@@ -126,7 +126,7 @@ module cpu(input logic clk, input logic reset, output logic [15:0] result, outpu
             if_id_pc <= 0;
         //checks if its not stalling so it can then assign new instructions, and as such it'll hold the previous values until the next clock cycle.   
         end
-        if (!stall) begin   
+        else if (!stall) begin   
             if_id_instruction <= instruction;
             if_id_pc <= pc_out;
         end
@@ -180,7 +180,7 @@ module cpu(input logic clk, input logic reset, output logic [15:0] result, outpu
     //holds ALU result and control signals until memory stage reads them
     always_ff @(posedge clk) begin
     
-    if (reset) begin
+    if (reset || ex_mem_branch) begin
         ex_mem_read_data2 <= 0;
         ex_mem_branch_addr <= 0;
         ex_mem_write_addr <= 0;
